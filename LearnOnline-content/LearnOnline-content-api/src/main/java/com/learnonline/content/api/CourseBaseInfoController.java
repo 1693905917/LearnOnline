@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @BelongsProject: LearnOnline
  * @BelongsPackage: com.learnonline.content.api
@@ -25,18 +21,25 @@ import java.util.List;
 @Api(value = "课程信息编辑接口",tags = "课程信息编辑接口")
 @RestController
 public class CourseBaseInfoController {
+    /**
+     * 课程查询接口
+     *
+     * @param pageParams 分页参数
+     * @param queryCourseParams 查询课程参数（可选）
+     * @return 课程列表分页结果
+     */
     @ApiOperation("课程查询接口")
     @PostMapping("/course/list")
     public PageResult<CourseBase> list(PageParams pageParams, @RequestBody(required=false) QueryCourseParamsDto queryCourseParams){
-        CourseBase courseBase = new CourseBase();
-        courseBase.setName("测试名称");
-        courseBase.setCreateDate(LocalDateTime.now());
-        List<CourseBase> courseBases = new ArrayList();
-        courseBases.add(courseBase);
-        PageResult pageResult = new PageResult<CourseBase>(courseBases,10,1,10);
-        return pageResult;
+//        CourseBase courseBase = new CourseBase();
+//        courseBase.setName("测试名称");
+//        courseBase.setCreateDate(LocalDateTime.now());
+//        List<CourseBase> courseBases = new ArrayList();
+//        courseBases.add(courseBase);
+//        PageResult pageResult = new PageResult<CourseBase>(courseBases,10,1,10);
+//        return pageResult;
 
-//        return null;
+        return null;
     }
 
 

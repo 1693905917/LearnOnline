@@ -13,25 +13,15 @@ import java.util.Arrays;
 /**
  * MyBatis-Plus 代码生成类
  */
-public class ContentCodeGenerator {
+public class SystemCodeGenerator {
 
 	// TODO 修改服务名以及数据表名
-	private static final String SERVICE_NAME = "content";
+	private static final String SERVICE_NAME = "system";
 
-	//数据库账号
 	private static final String DATA_SOURCE_USER_NAME  = "root";
-	//数据库密码
 	private static final String DATA_SOURCE_PASSWORD  = "mysql";
-	//生成的表
 	private static final String[] TABLE_NAMES = new String[]{
-			"course_base",
-			"course_market",
-			"course_teacher",
-			"course_category",
-			"teachplan",
-			"teachplan_media",
-			"course_publish",
-			"course_publish_pre"
+			"dictionary",
 	};
 
 	// TODO 默认生成entity，需要生成DTO修改此变量
@@ -46,8 +36,7 @@ public class ContentCodeGenerator {
 		// 全局配置
 		GlobalConfig gc = new GlobalConfig();
 		gc.setFileOverride(true);
-		//生成路径
-		gc.setOutputDir(System.getProperty("user.dir") + "/xuecheng-plus-generator/src/main/java");
+		gc.setOutputDir(System.getProperty("user.dir") + "/LearnOnline-generator/src/main/java");
 		gc.setAuthor("itcast");
 		gc.setOpen(false);
 		gc.setSwagger2(false);
@@ -65,8 +54,7 @@ public class ContentCodeGenerator {
 		DataSourceConfig dsc = new DataSourceConfig();
 		dsc.setDbType(DbType.MYSQL);
 		dsc.setUrl("jdbc:mysql://192.168.101.65:3306/ol_" + SERVICE_NAME
-				+ "?serverTimezone=UTC&useUnicode=true&useSSL=false&characterEncoding=utf8");
-//		dsc.setDriverName("com.mysql.jdbc.Driver");
+				+ "?useUnicode=true&useSSL=false&characterEncoding=utf8");
 		dsc.setDriverName("com.mysql.cj.jdbc.Driver");
 		dsc.setUsername(DATA_SOURCE_USER_NAME);
 		dsc.setPassword(DATA_SOURCE_PASSWORD);

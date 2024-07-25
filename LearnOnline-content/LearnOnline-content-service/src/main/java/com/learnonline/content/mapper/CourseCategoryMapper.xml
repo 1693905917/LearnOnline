@@ -17,5 +17,18 @@
     <sql id="Base_Column_List">
         id, name, label, parentid, is_show, orderby, is_leaf
     </sql>
-
+    <!--
+    resultType：当你数据库的字段名与你Java的类的属性名一致就用这个
+    如果不一致就要用resultMap,
+    resultType与resultMap都是用来存储查询到的数据返回值
+    id="selectTreeNodes"中的值必须与你所要关联的mapper方法名一致。
+    -->
+    <select id="selectTreeNodes" parameterType="string" resultType="com.learnonline.content.model.dto.CourseCategoryTreeDto">
+        with recursive t1 as (
+            select * from  course_category p where  id= #{id}
+            union all
+            select t.* from course_category t inner join t1 on t1.id = t.parentid
+        )
+        select *  from t1 order by t1.id, t1.orderby
+    </select>
 </mapper>

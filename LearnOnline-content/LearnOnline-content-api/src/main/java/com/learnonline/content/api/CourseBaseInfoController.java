@@ -1,13 +1,17 @@
 package com.learnonline.content.api;
 
+import com.learnonline.base.execption.ValidationGroups;
 import com.learnonline.base.model.PageParams;
 import com.learnonline.base.model.PageResult;
+import com.learnonline.content.model.dto.AddCourseDto;
+import com.learnonline.content.model.dto.CourseBaseInfoDto;
 import com.learnonline.content.model.dto.QueryCourseParamsDto;
 import com.learnonline.content.model.po.CourseBase;
 import com.learnonline.content.service.CourseBaseInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +31,6 @@ public class CourseBaseInfoController {
     CourseBaseInfoService courseBaseInfoService;
     /**
      * 课程查询接口
-     *
      * @param pageParams 分页参数
      * @param queryCourseParams 查询课程参数（可选）
      * @return 课程列表分页结果
@@ -37,6 +40,21 @@ public class CourseBaseInfoController {
     public PageResult<CourseBase> list(PageParams pageParams, @RequestBody(required=false) QueryCourseParamsDto queryCourseParams){
         PageResult<CourseBase> courseBasePageResult = courseBaseInfoService.queryCourseBaseList(pageParams, queryCourseParams);
         return courseBasePageResult;
+    }
+
+    /**
+     * 新增课程基础信息
+     * @param dto 课程基础信息的添加请求体，包括课程名称、课程描述等
+     * @return CourseBaseInfoDto 课程基础信息的响应体，这里返回null仅作为示例，实际业务中应该返回创建后的课程基础信息
+     */
+    @ApiOperation("新增课程基础信息")
+    @PostMapping("/course")
+    public CourseBaseInfoDto createCourseBase(@RequestBody @Validated(ValidationGroups.Insert.class) AddCourseDto dto){
+        //机构id，由于认证系统没有上线暂时硬编码
+        //TODO: 机构id从认证系统获取
+        Long companyId = 1232141425L;
+//        int i = 1/0;
+        return courseBaseInfoService.createCourseBase(companyId,dto);
     }
 
 

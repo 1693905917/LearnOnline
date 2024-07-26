@@ -2,6 +2,8 @@ package com.learnonline.content.service;
 
 import com.learnonline.base.model.PageParams;
 import com.learnonline.base.model.PageResult;
+import com.learnonline.content.model.dto.AddCourseDto;
+import com.learnonline.content.model.dto.CourseBaseInfoDto;
 import com.learnonline.content.model.dto.QueryCourseParamsDto;
 import com.learnonline.content.model.po.CourseBase;
 
@@ -21,4 +23,15 @@ public interface CourseBaseInfoService {
      * @return 课程基本信息列表
      */
     PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
+
+
+    /**
+     *
+     *@description 添加课程基本信息
+     * @param companyId  教学机构id
+     * @param dto  课程基本信息
+     * @return 课理详细信息
+     */
+    CourseBaseInfoDto createCourseBase(Long companyId,AddCourseDto dto);
+
 }

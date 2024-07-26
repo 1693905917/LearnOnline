@@ -20,7 +20,7 @@ import java.util.List;
  * @BelongsPackage: com.learnonline.content
  * @Author: ASUS
  * @CreateTime: 2024-07-23  17:08
- * @Description: TODO
+ * @Description: CourseBaseMapper测试类
  * @Version: 1.0
  */
 @SpringBootTest
@@ -46,7 +46,7 @@ public class CourseBaseMapperTests {
         queryWrapper.like(StringUtils.isNotEmpty(courseParamsDto.getCourseName()),CourseBase::getName, courseParamsDto.getCourseName());
         //根据课程审核状态查询
         queryWrapper.eq(StringUtils.isNotEmpty(courseParamsDto.getAuditStatus()), CourseBase::getAuditStatus, courseParamsDto.getAuditStatus());
-        //TODO 根据课程发布状态查询
+        //根据课程发布状态查询
         queryWrapper.eq(StringUtils.isNotEmpty(courseParamsDto.getPublishStatus()), CourseBase::getStatus, courseParamsDto.getPublishStatus());
         //分页参数对象
         PageParams pageParams = new PageParams();

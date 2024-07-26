@@ -14,7 +14,7 @@ import java.util.List;
  * @BelongsPackage: com.learnonline.content.api
  * @Author: ASUS
  * @CreateTime: 2024-07-24  17:13
- * @Description: TODO
+ * @Description: 课程分类管理接口
  * @Version: 1.0
  */
 @Slf4j

@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @BelongsPackage: com.learnonline.content.api
  * @Author: ASUS
  * @CreateTime: 2024-07-23  16:29
- * @Description: TODO
+ * @Description: 课程内容测试启动类
  * @Version: 1.0
  */
 

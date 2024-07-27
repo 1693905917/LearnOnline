@@ -28,7 +28,6 @@ class CourseCategoryServiceImplTest {
     void testCourseCategoryService() {
         List<CourseCategoryTreeDto> categoryTreeDtos = courseCategoryService.queryTreeNodes("1");
         System.out.println(categoryTreeDtos);
-
     }
 
 }

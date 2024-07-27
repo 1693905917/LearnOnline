@@ -1,6 +1,7 @@
 package com.learnonline.content.model.dto;
 
 import com.learnonline.content.model.po.CourseCategory;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import java.util.List;
 // 并且CourseCategoryTreeDto只是需要在CourseCategory上添加一个属性childrenTreeNodes即可，所以我们选择用extends CourseCategory进行继承。
 //添加implements Serializable的作用：我们将来在网络传输的时候，需要进行序列化，则需要实现Serializable接口。
 @Data
+@ApiModel(value="CourseCategoryTreeDto", description="课程分类树型结点dto")
 public class CourseCategoryTreeDto extends CourseCategory implements Serializable {
     List<CourseCategoryTreeDto> childrenTreeNodes;
 }

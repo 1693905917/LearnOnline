@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @BelongsPackage: com.learnonline.content.config
  * @Author: ASUS
  * @CreateTime: 2024-07-23  17:06
- * @Description: TODO
+ * @Description: 定义分页拦截器
  * @Version: 1.0
  */
 @Configuration

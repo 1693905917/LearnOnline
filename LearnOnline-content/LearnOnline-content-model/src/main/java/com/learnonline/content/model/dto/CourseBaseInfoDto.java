@@ -2,6 +2,7 @@ package com.learnonline.content.model.dto;
 
 
 import com.learnonline.content.model.po.CourseBase;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
  * @version 1.0
  */
 @Data
+@ApiModel(value="CourseBaseInfoDto", description="课程基本信息dto")
 public class CourseBaseInfoDto extends CourseBase {
 
 

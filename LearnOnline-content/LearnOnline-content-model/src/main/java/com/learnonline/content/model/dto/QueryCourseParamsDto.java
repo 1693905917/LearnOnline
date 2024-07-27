@@ -1,5 +1,6 @@
 package com.learnonline.content.model.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
@@ -14,6 +15,7 @@ import lombok.ToString;
  */
 @Data
 @ToString
+@ApiModel(value="AddCourseDto", description="课程查询参数Dto")
 public class QueryCourseParamsDto {
 
     //审核状态

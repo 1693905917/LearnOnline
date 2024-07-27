@@ -5,16 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.learnonline.base.execption.LearnOnlineException;
 import com.learnonline.base.model.PageParams;
 import com.learnonline.base.model.PageResult;
-import com.learnonline.content.mapper.CourseBaseMapper;
-import com.learnonline.content.mapper.CourseCategoryMapper;
-import com.learnonline.content.mapper.CourseMarketMapper;
+import com.learnonline.content.mapper.*;
 import com.learnonline.content.model.dto.AddCourseDto;
 import com.learnonline.content.model.dto.CourseBaseInfoDto;
 import com.learnonline.content.model.dto.EditCourseDto;
 import com.learnonline.content.model.dto.QueryCourseParamsDto;
-import com.learnonline.content.model.po.CourseBase;
-import com.learnonline.content.model.po.CourseCategory;
-import com.learnonline.content.model.po.CourseMarket;
+import com.learnonline.content.model.po.*;
 import com.learnonline.content.service.CourseBaseInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -41,6 +37,10 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     CourseMarketMapper courseMarketMapper;
     @Autowired
     CourseCategoryMapper courseCategoryMapper;
+    @Autowired
+    private CourseTeacherMapper courseTeacherMapper;
+    @Autowired
+    TeachplanMapper teachplanMapper;
 
     @Override
     public PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto) {
@@ -218,6 +218,33 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         saveCourseMarket(courseMarket);
         //查询课程信息
         return this.getCourseBaseInfo(courseId);
+    }
+
+    /**
+     * 删除课程
+     *
+     * @param companyId 机构ID
+     * @param courseId 课程ID
+     * @throws LearnOnlineException 当传入的机构ID与课程所属机构ID不一致时，抛出该异常
+     */
+    @Override
+    public void deleteCourse(Long companyId, Long courseId) {
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if(!companyId.equals(courseBase.getCompanyId())){
+            LearnOnlineException.cast("只允许本机构才能删除该课程");
+        }
+        // 删除课程教师信息
+        LambdaQueryWrapper<CourseTeacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        teacherLambdaQueryWrapper.eq(CourseTeacher::getCourseId, courseId);
+        courseTeacherMapper.delete(teacherLambdaQueryWrapper);
+        // 删除课程计划
+        LambdaQueryWrapper<Teachplan> teachplanLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        teachplanLambdaQueryWrapper.eq(Teachplan::getCourseId, courseId);
+        teachplanMapper.delete(teachplanLambdaQueryWrapper);
+        // 删除营销信息
+        courseMarketMapper.deleteById(courseId);
+        // 删除课程基本信息
+        courseBaseMapper.deleteById(courseId);
     }
 
     /**

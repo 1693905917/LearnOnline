@@ -51,4 +51,14 @@ public interface CourseBaseInfoService {
      * @return 返回更新后的课程基础信息DTO对象（CourseBaseInfoDto），包含了更新后的课程信息。
      */
     CourseBaseInfoDto  updateCourseBase(Long companyId, EditCourseDto dto);
+
+    /**
+     * 删除课程
+     *
+     * @param companyId 机构ID
+     * @param courseId  课程ID
+     * @return 无返回值
+     * @throws Exception 当删除课程发生异常时抛出
+     */
+    void deleteCourse(Long companyId, Long courseId);
 }

@@ -72,12 +72,39 @@ public class CourseBaseInfoController {
     public CourseBaseInfoDto getCourseBaseById(@PathVariable("courseId") Long courseId) {
         return courseBaseInfoService.getCourseBaseInfo(courseId);
     }
+    /**
+     * 修改课程基础信息
+     *
+     * @param editCourseDto 包含课程基础信息的编辑对象
+     * @return 修改后的课程基础信息对象
+     * @ApiOperation("修改课程基础信息") 用于Swagger框架的注解，标识该方法是一个API操作，其简要说明为“修改课程基础信息”
+     * @PutMapping("/course") 用于Spring框架的注解，标识该方法处理HTTP PUT请求，并映射到"/course"路径
+     * @RequestBody 标识方法参数editCourseDto的值来源于请求体
+     * @Validated({ValidationGroups.Update.class}) 标识对editCourseDto进行分组校验，仅校验Update分组的校验规则
+     */
     @ApiOperation("修改课程基础信息")
     @PutMapping("/course")
     public CourseBaseInfoDto modifyCourseBase(@RequestBody @Validated({ValidationGroups.Update.class}) EditCourseDto editCourseDto) {
         //TODO 机构id，由于认证系统没有上线暂时硬编码
         Long companyId = 1232141425L;
         return courseBaseInfoService.updateCourseBase(companyId, editCourseDto);
+    }
+
+    /**
+     * 删除课程
+     *
+     * @param courseId 要删除的课程ID
+     * @return 无返回值
+     * @ApiOperation("删除课程") 用于Swagger框架的注解，标识该方法是一个API操作，其简要说明为“删除课程”
+     * @DeleteMapping("/course/{courseId}") 用于Spring框架的注解，标识该方法处理HTTP DELETE请求，并映射到"/course/{courseId}"路径
+     * @PathVariable Long courseId 用于Spring框架的注解，标识方法参数courseId的值来源于请求路径中的{courseId}部分
+     */
+    @ApiOperation("删除课程")
+    @DeleteMapping("/course/{courseId}")
+    public void deleteCourse(@PathVariable Long courseId) {
+        //TODO 机构id，由于认证系统没有上线暂时硬编码
+        Long companyId = 1232141425L;
+        courseBaseInfoService.deleteCourse(companyId,courseId);
     }
 
 }

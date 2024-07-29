@@ -3,24 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>LearnOnline-system</artifactId>
+        <artifactId>LearnOnline-media</artifactId>
         <groupId>com.learnonline</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>LearnOnline-system-service</artifactId>
-    <name>LearnOnline-system-service</name>
-    <description>LearnOnline-system-service</description>
+    <artifactId>LearnOnline-media-service</artifactId>
+    <name>LearnOnline-media-service</name>
+    <description>LearnOnline-media-service</description>
 
     <dependencies>
-        <!--Spring Cloud Alibaba Nacos配置中心:内容管理服务读取Nacos-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.learnonline</groupId>
-            <artifactId>LearnOnline-system-model</artifactId>
+            <artifactId>LearnOnline-media-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

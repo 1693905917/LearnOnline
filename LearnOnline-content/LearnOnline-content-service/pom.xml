@@ -11,6 +11,13 @@
     <artifactId>LearnOnline-content-service</artifactId>
 
     <dependencies>
+
+        <!--Spring Cloud Alibaba Nacos配置中心:内容管理服务读取Nacos-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.learnonline</groupId>
             <artifactId>LearnOnline-content-model</artifactId>

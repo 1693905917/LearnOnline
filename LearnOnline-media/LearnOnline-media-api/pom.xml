@@ -3,42 +3,70 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
+        <artifactId>LearnOnline-media</artifactId>
         <groupId>com.learnonline</groupId>
-        <artifactId>LearnOnline-content</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+    <artifactId>LearnOnline-media-api</artifactId>
+    <name>LearnOnline-media-api</name>
+    <description>LearnOnline-media-api</description>
 
-    <artifactId>LearnOnline-content-api</artifactId>
     <dependencies>
-        <dependency>
-            <groupId>com.learnonline</groupId>
-            <artifactId>LearnOnline-content-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <!--Spring Cloud Alibaba Nacos服务发现注册中心:内容管理服务注册到Nacos-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
-        <!--Spring Cloud Alibaba Nacos配置中心:内容管理服务读取Nacos-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.learnonline</groupId>
+            <artifactId>LearnOnline-media-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.learnonline</groupId>
+            <artifactId>LearnOnline-media-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <!--cloud的基础环境包-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
         </dependency>
+
         <!-- Spring Boot 的 Spring Web MVC 集成 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <!-- Spring Boot 对 LocalDateTime
+          boot-starter-web自动引入
+          -->
+       <!-- <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>-->
 
+        <!--<dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>-->
         <!-- 排除 Spring Boot 依赖的日志包冲突 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,10 +78,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
+
         <!-- Spring Boot 集成 log4j2 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -64,10 +89,9 @@
         <dependency>
             <groupId>com.spring4all</groupId>
             <artifactId>swagger-spring-boot-starter</artifactId>
-            <version>1.9.0.RELEASE</version>
         </dependency>
 
-    </dependencies>
 
+    </dependencies>
 
 </project>

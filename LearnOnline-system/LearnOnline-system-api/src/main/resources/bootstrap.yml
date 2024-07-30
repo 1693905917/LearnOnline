@@ -1,24 +1,50 @@
-server:
-  servlet:
-    context-path: /system
-  port: 63110
+#server:
+#  servlet:
+#    context-path: /system
+#  port: 63110
 #微服务配置
 spring:
   application:
     name: system-api
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.101.65:3306/ol_system?serverTimezone=UTC&userUnicode=true&useSSL=false&
-    username: root
-    password: mysql
-# 日志文件配置路径
-logging:
-  config: classpath:log4j2-dev.xml
-
-# swagger 文档配置
-swagger:
-  title: "小志课堂系统管理"
-  description: "系统管理接口"
-  base-package: com.learnonline.system
-  enabled: true
-  version: 1.0.0
+  profiles:
+    active: dev #环境名
+ #Nacos配置
+  cloud:
+    nacos:
+      server-addr: 192.168.101.65:8848
+      discovery:
+        namespace: dev
+        group: LearnOnline
+      config:
+        namespace: dev
+        group: LearnOnline
+        file-extension: yaml
+        refresh-enabled: true
+        extension-configs: #引用其他项目独有的配置文件
+          - data-id: system-service-${spring.profiles.active}.yaml
+            group: LearnOnline
+            refresh: true
+        shared-configs: #引用公用的配置文件
+          - data-id: swagger-${spring.profiles.active}.yaml
+            group: LearnOnline-common
+            refresh: true
+          - data-id: logging-${spring.profiles.active}.yaml
+            group: LearnOnline-common
+            refresh: true
+  # 配置数据源
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://192.168.101.65:3306/ol_system?serverTimezone=UTC&userUnicode=true&useSSL=false&
+#    username: root
+#    password: mysql
+## 日志文件配置路径
+#logging:
+#  config: classpath:log4j2-dev.xml
+#
+## swagger 文档配置
+#swagger:
+#  title: "小志课堂系统管理"
+#  description: "系统管理接口"
+#  base-package: com.learnonline.system
+#  enabled: true
+#  version: 1.0.0

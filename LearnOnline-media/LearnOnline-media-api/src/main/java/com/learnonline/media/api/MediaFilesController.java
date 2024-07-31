@@ -18,10 +18,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author Mr.M
  * @version 1.0
  * @description 媒资文件管理接口
- * @date 2022/9/6 11:29
  */
 @Api(value = "媒资文件管理接口", tags = "媒资文件管理接口")
 @RestController
@@ -32,6 +30,13 @@ public class MediaFilesController {
     MediaFileService mediaFileService;
 
 
+    /**
+     * 媒资列表查询接口
+     *
+     * @param pageParams 分页参数
+     * @param queryMediaParamsDto 查询媒体文件参数
+     * @return 返回媒体文件列表的分页结果
+     */
     @ApiOperation("媒资列表查询接口")
     @PostMapping("/files")
     public PageResult<MediaFiles> list(PageParams pageParams, @RequestBody QueryMediaParamsDto queryMediaParamsDto) {

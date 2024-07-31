@@ -2,6 +2,7 @@ package com.learnonline.media.service;
 
 import com.learnonline.base.model.PageParams;
 import com.learnonline.base.model.PageResult;
+import com.learnonline.base.model.RestResponse;
 import com.learnonline.media.model.dto.QueryMediaParamsDto;
 import com.learnonline.media.model.dto.UploadFileParamsDto;
 import com.learnonline.media.model.dto.UploadFileResultDto;
@@ -48,4 +49,44 @@ public interface MediaFileService {
   * @return MediaFiles 媒体文件信息对象
   */
  public MediaFiles addMediaFilesToDb(Long companyId,String fileMd5,UploadFileParamsDto uploadFileParamsDto,String bucket,String objectName);
+
+
+ /**
+  * 检查文件是否存在
+  *
+  * @param fileMd5 文件的md5值
+  * @return 返回一个RestResponse对象，包含文件是否存在的布尔值。false表示文件不存在，true表示文件存在
+  */
+ public RestResponse<Boolean> checkFile(String fileMd5);
+
+ /**
+  * 检查分块是否存在
+  *
+  * @param fileMd5  文件的md5值
+  * @param chunkIndex 分块序号
+  * @return 返回一个RestResponse对象，包含分块是否存在的布尔值。false表示分块不存在，true表示分块存在
+  */
+ public RestResponse<Boolean> checkChunk(String fileMd5, int chunkIndex);
+
+
+ /**
+  * @description 上传分块
+  * @param fileMd5  文件md5
+  * @param chunk  分块序号
+  * @param localFilePath  文件字节
+  * @return com.xuecheng.base.model.RestResponse
+  */
+ public RestResponse uploadChunk(String fileMd5, int chunk,String localFilePath);
+
+ /**
+  * @description 合并分块
+  * @param companyId  机构id
+  * @param fileMd5  文件md5
+  * @param chunkTotal 分块总和
+  * @param uploadFileParamsDto 文件信息
+  * @return com.xuecheng.base.model.RestResponse
+  *记录companyId  机构id是为了当机构如果传的视频过多，我们平台就要开始收费了，所以标记这些视频是哪个机构传的
+  */
+ public RestResponse mergechunks(Long companyId,String fileMd5,int chunkTotal,UploadFileParamsDto uploadFileParamsDto);
+
 }

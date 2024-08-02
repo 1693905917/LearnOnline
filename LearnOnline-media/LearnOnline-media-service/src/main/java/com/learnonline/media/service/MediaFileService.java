@@ -8,6 +8,8 @@ import com.learnonline.media.model.dto.UploadFileParamsDto;
 import com.learnonline.media.model.dto.UploadFileResultDto;
 import com.learnonline.media.model.po.MediaFiles;
 
+import java.io.File;
+
 
 /**
  * @description 媒资文件管理业务类
@@ -89,4 +91,21 @@ public interface MediaFileService {
   */
  public RestResponse mergechunks(Long companyId,String fileMd5,int chunkTotal,UploadFileParamsDto uploadFileParamsDto);
 
+
+ /**
+  * 从minio下载文件
+  * @param bucket 桶
+  * @param objectName 对象名称
+  * @return 下载后的文件
+  */
+ public File downloadFileFromMinIO(String bucket, String objectName);
+
+ /**
+  * @param localFilePath 文件地址
+  * @param bucket        桶
+  * @param objectName    对象名称
+  * @return void
+  * @description 将文件写入minIO
+  */
+ public boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName);
 }

@@ -29,93 +29,66 @@ import java.util.List;
 @Service
 public class MediaFileProcessServiceImpl implements MediaFileProcessService {
     @Autowired
-    MediaFilesMapper mediaFilesMapper;
-
-    @Autowired
     MediaProcessMapper mediaProcessMapper;
     @Autowired
     MediaProcessHistoryMapper mediaProcessHistoryMapper;
+    @Autowired
+    MediaFilesMapper mediaFilesMapper;
 
-    /**
-     * 获取待处理媒体任务列表
-     *
-     * @param shardIndex 分片索引
-     * @param shardTotal 分片总数
-     * @param count      获取记录数
-     * @return 返回一个待处理媒体任务列表
-     */
     @Override
     public List<MediaProcess> getMediaProcessList(int shardIndex, int shardTotal, int count) {
         List<MediaProcess> mediaProcesses = mediaProcessMapper.selectListByShardIndex(shardTotal, shardIndex, count);
         return mediaProcesses;
     }
 
-
-
-    /**
-     * 开始任务
-     *
-     * @param id 任务ID
-     * @return 如果任务启动成功返回true，否则返回false
-     */
     //实现如下
     public boolean startTask(long id) {
         int result = mediaProcessMapper.startTask(id);
         return result<=0?false:true;
     }
 
-    /**
-     * 保存任务处理完成状态
-     *
-     * @param taskId 任务ID
-     * @param status 任务状态
-     * @param fileId 媒资文件ID
-     * @param url 媒资文件访问URL
-     * @param errorMsg 错误信息
-     * @throws Exception 如果任务不存在或更新失败则抛出异常
-     */
-    @Transactional
     @Override
     public void saveProcessFinishStatus(Long taskId, String status, String fileId, String url, String errorMsg) {
-        //查出任务，如果不存在则直接返回
+
+        //要更新的任务
         MediaProcess mediaProcess = mediaProcessMapper.selectById(taskId);
         if(mediaProcess == null){
             return ;
         }
-        //处理失败，更新任务处理结果
-        LambdaQueryWrapper<MediaProcess> queryWrapperById = new LambdaQueryWrapper<MediaProcess>().eq(MediaProcess::getId, taskId);
-        //处理失败
+        //如果任务执行失败
         if(status.equals("3")){
-            MediaProcess mediaProcess_u = new MediaProcess();
-            mediaProcess_u.setStatus("3");
-            mediaProcess_u.setErrormsg(errorMsg);
-            mediaProcess_u.setFailCount(mediaProcess.getFailCount()+1);
-            mediaProcessMapper.update(mediaProcess_u,queryWrapperById);
-            log.debug("更新任务处理状态为失败，任务信息:{}",mediaProcess_u);
-            return ;
+            //更新MediaProcess表的状态
+            mediaProcess.setStatus("3");
+            mediaProcess.setFailCount(mediaProcess.getFailCount()+1);//失败次数加1
+            mediaProcess.setErrormsg(errorMsg);
+            mediaProcessMapper.updateById(mediaProcess);
+            //更高效的更新方式
+//            mediaProcessMapper.update()
+            //todo:将上边的更新方式更改为效的更新方式
+            return;
+
         }
-        //任务处理成功
+
+
+        //======如果任务执行成功======
+        //文件表记录
         MediaFiles mediaFiles = mediaFilesMapper.selectById(fileId);
-        if(mediaFiles!=null){
-            //更新媒资文件中的访问url
-            mediaFiles.setUrl(url);
-            mediaFilesMapper.updateById(mediaFiles);
-        }
-        //处理成功，更新url和状态
-        mediaProcess.setUrl(url);
+        //更新media_file表中的url
+        mediaFiles.setUrl(url);
+        mediaFilesMapper.updateById(mediaFiles);
+
+        //更新MediaProcess表的状态
         mediaProcess.setStatus("2");
         mediaProcess.setFinishDate(LocalDateTime.now());
+        mediaProcess.setUrl(url);
         mediaProcessMapper.updateById(mediaProcess);
 
-        //添加到历史记录
+        //将MediaProcess表记录插入到MediaProcessHistory表
         MediaProcessHistory mediaProcessHistory = new MediaProcessHistory();
-        BeanUtils.copyProperties(mediaProcess, mediaProcessHistory);
+        BeanUtils.copyProperties(mediaProcess,mediaProcessHistory);
         mediaProcessHistoryMapper.insert(mediaProcessHistory);
-        //删除mediaProcess当前任务
-        mediaProcessMapper.deleteById(mediaProcess.getId());
 
+        //从MediaProcess删除当前任务
+        mediaProcessMapper.deleteById(taskId);
     }
-
-
-
 }

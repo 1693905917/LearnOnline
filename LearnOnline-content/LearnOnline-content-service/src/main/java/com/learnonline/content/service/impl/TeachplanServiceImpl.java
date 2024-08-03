@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.learnonline.base.execption.LearnOnlineException;
 import com.learnonline.content.mapper.TeachplanMapper;
 import com.learnonline.content.mapper.TeachplanMediaMapper;
+import com.learnonline.content.model.dto.BindTeachplanMediaDto;
 import com.learnonline.content.model.dto.SaveTeachplanDto;
 import com.learnonline.content.model.dto.TeachplanDto;
 import com.learnonline.content.model.po.Teachplan;
@@ -183,6 +184,60 @@ public class TeachplanServiceImpl implements TeachplanService {
             }
         }
     }
+
+    /**
+     * 绑定媒资文件到教学计划
+     *
+     * @param bindTeachplanMediaDto 绑定教学计划媒资的Dto对象
+     * @return 绑定后的教学计划媒资对象
+     * @throws LearnOnlineException 如果教学计划不存在或不允许绑定媒资文件
+     */
+    @Transactional
+    @Override
+    public TeachplanMedia associationMedia(BindTeachplanMediaDto bindTeachplanMediaDto) {
+        //教学计划id
+        Long teachplanId = bindTeachplanMediaDto.getTeachplanId();
+        Teachplan teachplan = teachplanMapper.selectById(teachplanId);
+        if(teachplan==null){
+            LearnOnlineException.cast("教学计划不存在");
+        }
+        Integer grade = teachplan.getGrade();
+        if(grade!=2){
+            LearnOnlineException.cast("只允许第二级教学计划绑定媒资文件");
+        }
+        //课程id
+        Long courseId = teachplan.getCourseId();
+
+        //先删除原来该教学计划绑定的媒资
+        teachplanMediaMapper.delete(new LambdaQueryWrapper<TeachplanMedia>().eq(TeachplanMedia::getTeachplanId,teachplanId));
+
+        //再添加教学计划与媒资的绑定关系
+        TeachplanMedia teachplanMedia = new TeachplanMedia();
+        teachplanMedia.setCourseId(courseId);
+        teachplanMedia.setTeachplanId(teachplanId);
+        teachplanMedia.setMediaFilename(bindTeachplanMediaDto.getFileName());
+        teachplanMedia.setMediaId(bindTeachplanMediaDto.getMediaId());
+        teachplanMedia.setCreateDate(LocalDateTime.now());
+        teachplanMediaMapper.insert(teachplanMedia);
+        return teachplanMedia;
+    }
+
+    /**
+     * 取消课程计划与媒资的绑定关系
+     *
+     * @param teachPlanId 课程计划ID
+     * @param mediaId     媒资文件ID
+     * @throws RuntimeException 如果操作失败，则抛出运行时异常
+     */
+    @Transactional
+    @Override
+    public void unAssociationMedia(Long teachPlanId, String mediaId) {
+        LambdaQueryWrapper<TeachplanMedia> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(TeachplanMedia::getTeachplanId, teachPlanId)
+                .eq(TeachplanMedia::getMediaId, mediaId);
+        teachplanMediaMapper.delete(queryWrapper);
+    }
+
 
     /**
      * 交换两个课程计划的排序值

@@ -35,18 +35,42 @@ public class MediaFileProcessServiceImpl implements MediaFileProcessService {
     @Autowired
     MediaFilesMapper mediaFilesMapper;
 
+    /**
+     * 根据分片索引和总数获取媒体处理列表
+     *
+     * @param shardIndex 分片索引
+     * @param shardTotal 分片总数
+     * @param count      获取数量
+     * @return 媒体处理列表
+     */
     @Override
     public List<MediaProcess> getMediaProcessList(int shardIndex, int shardTotal, int count) {
         List<MediaProcess> mediaProcesses = mediaProcessMapper.selectListByShardIndex(shardTotal, shardIndex, count);
         return mediaProcesses;
     }
 
+    /**
+     * 启动任务
+     *
+     * @param id 任务的唯一标识符
+     * @return 如果任务启动成功，则返回true；否则返回false
+     */
     //实现如下
     public boolean startTask(long id) {
         int result = mediaProcessMapper.startTask(id);
         return result<=0?false:true;
     }
 
+    /**
+     * 保存任务完成状态
+     *
+     * @param taskId 任务ID
+     * @param status 任务状态
+     * @param fileId 文件ID
+     * @param url    文件URL
+     * @param errorMsg 错误信息
+     * @return 无
+     */
     @Override
     public void saveProcessFinishStatus(Long taskId, String status, String fileId, String url, String errorMsg) {
 

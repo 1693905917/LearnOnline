@@ -64,6 +64,14 @@ public class MediaFileServiceImpl implements MediaFileService {
     @Value("${minio.bucket.videofiles}")
     private String bucket_video;
 
+    /**
+     * 根据条件查询媒体文件分页列表
+     *
+     * @param companyId 公司ID
+     * @param pageParams 分页参数
+     * @param queryMediaParamsDto 查询媒体文件参数
+     * @return 媒体文件分页列表结果
+     */
     @Override
     public PageResult<MediaFiles> queryMediaFiels(Long companyId, PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto) {
 
@@ -84,6 +92,12 @@ public class MediaFileServiceImpl implements MediaFileService {
 
     }
 
+    /**
+     * 根据文件扩展名获取MIME类型
+     *
+     * @param extension 文件扩展名
+     * @return MIME类型字符串，若扩展名为空则返回通用的字节流MIME类型
+     */
     //根据扩展名获取mimeType
     private String getMimeType(String extension){
         if(extension == null){
@@ -126,12 +140,35 @@ public class MediaFileServiceImpl implements MediaFileService {
         return false;
     }
 
+    /**
+     * 根据媒体文件ID获取媒体文件
+     *
+     * @param mediaId 媒体文件ID
+     * @return 返回媒体文件对象
+     */
+    @Override
+    public MediaFiles getFileById(String mediaId) {
+        MediaFiles mediaFiles = mediaFilesMapper.selectById(mediaId);
+        return mediaFiles;
+    }
+
+    /**
+     * 获取文件默认存储目录路径，格式为年/月/日
+     *
+     * @return 返回一个字符串，表示文件默认存储目录路径
+     */
     //获取文件默认存储目录路径 年/月/日
     private String getDefaultFolderPath() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String folder = sdf.format(new Date()).replace("-", "/")+"/";
         return folder;
     }
+    /**
+     * 获取文件的md5值
+     *
+     * @param file 待获取md5值的文件
+     * @return 文件的md5值，如果获取失败则返回null
+     */
     //获取文件的md5
     private String getFileMd5(File file) {
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
@@ -143,6 +180,15 @@ public class MediaFileServiceImpl implements MediaFileService {
         }
     }
 
+    /**
+     * 上传文件到MinIO并保存到数据库
+     *
+     * @param companyId 公司ID
+     * @param uploadFileParamsDto 上传文件参数
+     * @param localFilePath 本地文件路径
+     * @return 上传文件结果
+     * @throws LearnOnlineException 上传文件失败或保存信息失败时抛出异常
+     */
     @Override
     public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath) {
 
@@ -257,6 +303,12 @@ public class MediaFileServiceImpl implements MediaFileService {
     }
 
 
+    /**
+     * 检查文件是否存在
+     *
+     * @param fileMd5 文件的MD5值
+     * @return 返回RestResponse<Boolean>类型的结果，true表示文件存在，false表示文件不存在
+     */
     @Override
     public RestResponse<Boolean> checkFile(String fileMd5) {
         //先查询数据库
@@ -288,6 +340,13 @@ public class MediaFileServiceImpl implements MediaFileService {
         return RestResponse.success(false);
     }
 
+    /**
+     * 检查文件分块是否存在
+     *
+     * @param fileMd5 文件MD5值
+     * @param chunkIndex 分块索引
+     * @return 返回RestResponse<Boolean>类型的结果，true表示分块存在，false表示分块不存在
+     */
     @Override
     public RestResponse<Boolean> checkChunk(String fileMd5, int chunkIndex) {
 //分块存储路径是：md5前两位为两个目录，chunk存储分块文件
@@ -318,6 +377,14 @@ public class MediaFileServiceImpl implements MediaFileService {
 
 
 
+    /**
+     * 上传文件分块
+     *
+     * @param fileMd5 文件MD5值
+     * @param chunk 分块索引
+     * @param localFilePath 本地文件路径
+     * @return 上传结果，成功返回RestResponse.success(true)，失败返回RestResponse.validfail(false, "上传分块失败")
+     */
     @Override
     public RestResponse uploadChunk(String fileMd5, int chunk,String localFilePath) {
 
@@ -338,6 +405,15 @@ public class MediaFileServiceImpl implements MediaFileService {
     }
 
 
+    /**
+     * 合并分块文件
+     *
+     * @param companyId   公司ID
+     * @param fileMd5     文件的MD5值
+     * @param chunkTotal  分块总数
+     * @param uploadFileParamsDto 上传文件参数
+     * @return 合并结果，成功返回RestResponse.success(true)，失败返回RestResponse.validfail(false, 错误信息)
+     */
     @Override
     public RestResponse mergechunks(Long companyId, String fileMd5, int chunkTotal, UploadFileParamsDto uploadFileParamsDto) {
         //分块文件所在目录
@@ -458,6 +534,12 @@ public class MediaFileServiceImpl implements MediaFileService {
         return   fileMd5.substring(0,1) + "/" + fileMd5.substring(1,2) + "/" + fileMd5 + "/" +fileMd5 +fileExt;
     }
 
+    /**
+     * 获取分块文件的目录路径
+     *
+     * @param fileMd5 文件的MD5值
+     * @return 分块文件的目录路径
+     */
     //得到分块文件的目录
     private String getChunkFileFolderPath(String fileMd5) {
         return fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/" + "chunk" + "/";

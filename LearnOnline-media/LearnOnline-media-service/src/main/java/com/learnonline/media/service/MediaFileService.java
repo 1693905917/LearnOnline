@@ -108,4 +108,12 @@ public interface MediaFileService {
   * @description 将文件写入minIO
   */
  public boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName);
+
+ /**
+  * 根据媒体文件ID获取媒体文件
+  *
+  * @param mediaId 媒体文件ID
+  * @return 返回媒体文件对象
+  */
+ public MediaFiles getFileById(String mediaId);
 }

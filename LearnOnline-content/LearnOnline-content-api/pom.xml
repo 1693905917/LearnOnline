@@ -15,6 +15,11 @@
             <artifactId>LearnOnline-content-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- freemarker模板引擎-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
         <!--Spring Cloud Alibaba Nacos服务发现注册中心:内容管理服务注册到Nacos-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -26,7 +31,6 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
-
         <!--cloud的基础环境包-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -37,7 +41,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
 
         <!-- 排除 Spring Boot 依赖的日志包冲突 -->
         <dependency>

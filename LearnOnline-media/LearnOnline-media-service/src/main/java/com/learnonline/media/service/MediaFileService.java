@@ -27,7 +27,7 @@ public interface MediaFileService {
   * @author Mr.M
   * @date 2022/9/10 8:57
  */
- public PageResult<MediaFiles> queryMediaFiels(Long companyId, PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto);
+ public PageResult<MediaFiles> queryMediaFiels(Long companyId,PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto);
 
 
  /**
@@ -75,10 +75,10 @@ public interface MediaFileService {
   * @description 上传分块
   * @param fileMd5  文件md5
   * @param chunk  分块序号
-  * @param localFilePath  文件字节
+  * @param localChunkFilePath  文件字节
   * @return com.xuecheng.base.model.RestResponse
   */
- public RestResponse uploadChunk(String fileMd5, int chunk,String localFilePath);
+ public RestResponse uploadChunk(String fileMd5, int chunk,String localChunkFilePath);
 
  /**
   * @description 合并分块
@@ -108,4 +108,12 @@ public interface MediaFileService {
   * @description 将文件写入minIO
   */
  public boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName);
+
+ /**
+  * 根据媒体文件ID获取媒体文件
+  *
+  * @param mediaId 媒体文件ID
+  * @return 返回媒体文件对象
+  */
+ public MediaFiles getFileById(String mediaId);
 }

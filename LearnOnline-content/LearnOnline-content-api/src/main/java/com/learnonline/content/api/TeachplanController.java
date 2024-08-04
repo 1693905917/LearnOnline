@@ -1,5 +1,6 @@
 package com.learnonline.content.api;
 
+import com.learnonline.content.model.dto.BindTeachplanMediaDto;
 import com.learnonline.content.model.dto.SaveTeachplanDto;
 import com.learnonline.content.model.dto.TeachplanDto;
 import com.learnonline.content.service.TeachplanService;
@@ -74,4 +75,31 @@ public class TeachplanController {
     public void orderByTeachplan(@PathVariable String moveType,@PathVariable Long teachplanId){
         teachplanService.orderByTeachplan(moveType, teachplanId);
     }
+
+    /**
+     * 课程计划和媒资信息绑定
+     *
+     * @param bindTeachplanMediaDto 绑定课程计划和媒资信息的DTO对象
+     * @return 无返回值
+     */
+    @ApiOperation(value = "课程计划和媒资信息绑定")
+    @PostMapping("/teachplan/association/media")
+    public void associationMedia(@RequestBody BindTeachplanMediaDto bindTeachplanMediaDto){
+        teachplanService.associationMedia(bindTeachplanMediaDto);
+    }
+
+    /**
+     * 课程计划解除媒资信息绑定
+     *
+     * @param teachPlanId 课程计划ID
+     * @param mediaId     媒资文件ID
+     * @return 无返回值
+     */
+    @ApiOperation("课程计划解除媒资信息绑定")
+    @DeleteMapping("/teachplan/association/media/{teachPlanId}/{mediaId}")
+    public void unAssociationMedia(@PathVariable("teachPlanId") Long teachPlanId, @PathVariable("mediaId") String mediaId) {
+//        Long tId = Long.parseLong(teachplanId);
+        teachplanService.unAssociationMedia(teachPlanId, mediaId);
+    }
+
 }

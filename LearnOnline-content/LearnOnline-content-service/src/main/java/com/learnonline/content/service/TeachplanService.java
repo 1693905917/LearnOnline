@@ -1,7 +1,9 @@
 package com.learnonline.content.service;
 
+import com.learnonline.content.model.dto.BindTeachplanMediaDto;
 import com.learnonline.content.model.dto.SaveTeachplanDto;
 import com.learnonline.content.model.dto.TeachplanDto;
+import com.learnonline.content.model.po.TeachplanMedia;
 
 import java.util.List;
 
@@ -43,4 +45,18 @@ public interface TeachplanService {
      * @return 无返回值
      */
     public void orderByTeachplan(String moveType, Long teachplanId);
+
+    /**
+     * @description 教学计划绑定媒资
+     * @param bindTeachplanMediaDto
+     * @return com.learnonline.content.model.po.TeachplanMedia
+     */
+    public TeachplanMedia associationMedia(BindTeachplanMediaDto bindTeachplanMediaDto);
+
+    /** 解绑教学计划与媒资信息
+     * @param teachPlanId       教学计划id
+     * @param mediaId           媒资信息id
+     */
+    void unAssociationMedia(Long teachPlanId, String mediaId);
+
 }

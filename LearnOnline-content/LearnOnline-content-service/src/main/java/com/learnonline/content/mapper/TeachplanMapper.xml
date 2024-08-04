@@ -57,9 +57,9 @@
                 <id column="teachplanMeidaId"   property="id" />
                 <result column="mediaFilename"   property="mediaFilename"/>
                 <result column="mediaId"   property="mediaId" />
-<!--                <result column="two_id"   property="teachplanId" />-->
-<!--                <result column="two_courseId"   property="courseId" />-->
-<!--                <result column="two_coursePubId"   property="coursePubId" />-->
+                <result column="two_id"   property="teachplanId" />
+                <result column="two_courseId"   property="courseId" />
+                <result column="two_coursePubId"   property="coursePubId" />
             </association>
         </collection>
 

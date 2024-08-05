@@ -2,6 +2,8 @@ package com.learnonline.content.api;
 
 import com.learnonline.content.model.dto.CoursePreviewDto;
 import com.learnonline.content.service.CoursePublishService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +20,20 @@ import org.springframework.web.servlet.ModelAndView;
  * @Description: 课程预览，发布
  * @Version: 1.0
  */
+@Api(value = "课程预览发布接口",tags = "课程预览发布接口")
 @Controller
 public class CoursePublishController {
     @Autowired
     CoursePublishService coursePublishService;
 
+    /**
+     * 课程预览
+     *
+     * @param courseId 课程ID
+     * @return 返回ModelAndView对象，包含课程预览信息和页面视图名称
+     */
     @GetMapping("/coursepreview/{courseId}")
+    @ApiOperation("课程预览")
     public ModelAndView preview(@PathVariable("courseId") Long courseId){
         //获取课程预览信息
         CoursePreviewDto coursePreviewInfo = coursePublishService.getCoursePreviewInfo(courseId);
@@ -33,12 +43,34 @@ public class CoursePublishController {
         return modelAndView;
     }
 
+    /**
+     * 课程审核
+     *
+     * @param courseId 课程ID
+     * @return 无返回值，通过修改数据库状态实现审核功能
+     */
     @ResponseBody
+    @ApiOperation("课程审核")
     @PostMapping("/courseaudit/commit/{courseId}")
     public void commitAudit(@PathVariable("courseId") Long courseId){
         Long companyId = 1232141425L;
         coursePublishService.commitAudit(companyId,courseId);
     }
+
+    /**
+     * 发布课程
+     *
+     * @param courseId 课程ID
+     * @return 无返回值，执行发布课程操作
+     */
+    @ApiOperation("课程发布")
+    @ResponseBody
+    @PostMapping ("/coursepublish/{courseId}")
+    public void coursepublish(@PathVariable("courseId") Long courseId){
+        Long companyId = 1232141425L;
+        coursePublishService.publish(companyId,courseId);
+    }
+
 
 
 }

@@ -4,53 +4,28 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.learnonline</groupId>
-        <artifactId>LearnOnline-content</artifactId>
+        <artifactId>LearnOnline-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <!--继承父工程的pom.xml-->
+        <relativePath>../LearnOnline-parent</relativePath>
     </parent>
-
-    <artifactId>LearnOnline-content-service</artifactId>
+    <artifactId>LearnOnline-message-sdk</artifactId>
 
     <dependencies>
-        <!--xxl-job-->
         <dependency>
-            <groupId>com.xuxueli</groupId>
-            <artifactId>xxl-job-core</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
         </dependency>
-
-
-        <dependency>
-            <groupId>com.learnonline</groupId>
-            <artifactId>LearnOnline-message-sdk</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <!--Spring Cloud Alibaba Nacos配置中心:内容管理服务读取Nacos-->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.learnonline</groupId>
-            <artifactId>LearnOnline-content-model</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
         <!-- MySQL 驱动 -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <!-- mybatis plus的依赖 -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-context</artifactId>
         </dependency>
         <!-- Spring Boot 集成 Junit -->
         <dependency>
@@ -76,7 +51,16 @@
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.8.1</version>
+        </dependency>
 
+    </dependencies>
 
 </project>

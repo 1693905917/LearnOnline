@@ -1,13 +1,22 @@
 package com.learnonline.content.service.jobhandler;
 
+import com.learnonline.base.execption.LearnOnlineException;
+import com.learnonline.content.feignclient.CourseIndex;
+import com.learnonline.content.feignclient.SearchServiceClient;
+import com.learnonline.content.mapper.CoursePublishMapper;
+import com.learnonline.content.model.po.CoursePublish;
+import com.learnonline.content.service.CoursePublishService;
 import com.learnonline.messagesdk.model.po.MqMessage;
 import com.learnonline.messagesdk.service.MessageProcessAbstract;
 import com.learnonline.messagesdk.service.MqMessageService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,6 +30,22 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 public class CoursePublishTask extends MessageProcessAbstract {
+
+    @Autowired
+    CoursePublishService coursePublishService;
+
+    @Autowired
+    CoursePublishMapper coursePublishMapper;
+
+    @Autowired
+    SearchServiceClient searchServiceClient;
+    /**
+     * 任务调度入口，用于处理课程发布任务
+     *
+     * @throws Exception 抛出异常
+     *
+     * @XxlJob("CoursePublishJobHandler") 标记为XXL-JOB的定时任务，执行器名为"CoursePublishJobHandler"
+     */
     //任务调度入口
     @XxlJob("CoursePublishJobHandler")
     public void coursePublishJobHandler() throws Exception {
@@ -32,6 +57,12 @@ public class CoursePublishTask extends MessageProcessAbstract {
         process(shardIndex,shardTotal,"course_publish",30,60);
     }
 
+    /**
+     * 课程发布任务处理
+     *
+     * @param mqMessage 消息对象
+     * @return 是否执行成功
+     */
     //课程发布任务处理
     @Override
     public boolean execute(MqMessage mqMessage) {
@@ -48,6 +79,13 @@ public class CoursePublishTask extends MessageProcessAbstract {
     }
 
 
+    /**
+     * 生成课程静态化页面并上传至文件系统
+     *
+     * @param mqMessage 消息对象
+     * @param courseId  课程ID
+     * @throws LearnOnlineException 当课程静态化失败时抛出异常
+     */
     //生成课程静态化页面并上传至文件系统
     public void generateCourseHtml(MqMessage mqMessage,long courseId){
         log.debug("开始进行课程静态化,课程id:{}",courseId);
@@ -61,48 +99,64 @@ public class CoursePublishTask extends MessageProcessAbstract {
             log.debug("课程静态化已处理,无需处理...，课程id:{}",courseId);
             return ;
         }
-        //TODO 制造一个异常表示任务执行中有问题
-        int i=1/0;
-        //开始进行模拟课程静态化
-//        try {
-//            TimeUnit.SECONDS.sleep(10);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+        //生成静态化页面
+        File file = coursePublishService.generateCourseHtml(courseId);
+        //上传静态化页面
+        if(file!=null){
+            coursePublishService.uploadCourseHtml(courseId,file);
+        }else{
+            log.debug("课程静态化失败,课程id:{}",courseId);
+            LearnOnlineException.cast("课程静态化失败");
+        }
         //保存第一阶段状态
         mqMessageService.completedStageOne(id);
 
     }
 
+    /**
+     * 保存课程索引信息
+     *
+     * @param mqMessage 消息对象
+     * @param courseId  课程ID
+     * @return 无返回值
+     */
     //保存课程索引信息
     public void saveCourseIndex(MqMessage mqMessage,long courseId){
         log.debug("保存课程索引信息,课程id:{}",courseId);
-//        try {
-//            TimeUnit.SECONDS.sleep(2);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-
         //消息id
         Long id = mqMessage.getId();
         //消息处理的service
         MqMessageService mqMessageService = this.getMqMessageService();
         //消息幂等性处理
-        int stageOne = mqMessageService.getStageTwo(id);
-        if(stageOne >0){
+        int stageTwo = mqMessageService.getStageTwo(id);
+        if(stageTwo >0){
             log.debug("课程索引信息已写入,无需处理...，课程id:{}",courseId);
             return ;
         }
-        //开始进行模拟课程静态化
-//        try {
-//            TimeUnit.SECONDS.sleep(10);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-        //保存第一阶段状态
-        mqMessageService.completedStageTwo(id);
-
+        Boolean result = saveCourseIndex(courseId);
+        if(result){
+            //保存第一阶段状态
+            mqMessageService.completedStageTwo(id);
+        }else{
+            log.debug("课程索引信息写入失败,课程id:{}",courseId);
+            LearnOnlineException.cast("课程索引信息写入失败");
+        }
     }
+
+    private Boolean saveCourseIndex(Long courseId) {
+        //取出课程发布信息
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+        //拷贝至课程索引对象
+        CourseIndex courseIndex = new CourseIndex();
+        BeanUtils.copyProperties(coursePublish,courseIndex);
+        //远程调用搜索服务api添加课程信息到索引
+        Boolean add = searchServiceClient.add(courseIndex);
+        if(!add){
+            LearnOnlineException.cast("添加索引失败");
+        }
+        return add;
+    }
+
 
     //将课程信息缓存至redis
     public void saveCourseCache(MqMessage mqMessage,long courseId){

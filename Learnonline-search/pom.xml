@@ -9,7 +9,7 @@
         <!--继承父工程的pom.xml-->
         <relativePath>../LearnOnline-parent</relativePath>
     </parent>
-    <artifactId>xuecheng-plus-search</artifactId>
+    <artifactId>LearnOnline-search</artifactId>
 
     <dependencies>
         <dependency>

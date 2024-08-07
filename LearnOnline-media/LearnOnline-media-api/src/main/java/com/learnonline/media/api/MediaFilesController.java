@@ -56,7 +56,7 @@ public class MediaFilesController {
 // 指定传递的类型：MediaType.MULTIPART_FORM_DATA_VALUE
     @RequestMapping(value = "/upload/coursefile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 //@RequestPart:获取前端表格中文件上传对应的name
-    public UploadFileResultDto upload(@RequestPart("filedata") MultipartFile filedata) throws IOException {
+    public UploadFileResultDto upload(@RequestPart("filedata") MultipartFile filedata,@RequestParam(value= "objectName",required=false) String objectName) throws IOException {
         Long companyId = 1232141425L;
         UploadFileParamsDto uploadFileParamsDto = new UploadFileParamsDto();
         //文件大小
@@ -74,7 +74,7 @@ public class MediaFilesController {
         //就可以获取文件路径
         String localFilePath = tempFile.getAbsolutePath();
         //上传文件
-        UploadFileResultDto uploadFileResultDto = mediaFileService.uploadFile(companyId, uploadFileParamsDto, localFilePath);
+        UploadFileResultDto uploadFileResultDto = mediaFileService.uploadFile(companyId, uploadFileParamsDto, localFilePath,objectName);
 
         return uploadFileResultDto;
 

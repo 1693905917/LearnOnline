@@ -2,6 +2,7 @@ package com.learnonline;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * @BelongsProject: LearnOnline
@@ -11,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Description: 课程内容测试启动类
  * @Version: 1.0
  */
-
+@EnableFeignClients(basePackages={"com.learnonline.content.feignclient"})
 @SpringBootApplication
 public class ContentApplication {
     public static void main(String[] args) {

@@ -10,6 +10,16 @@
 
     <artifactId>LearnOnline-content-api</artifactId>
     <dependencies>
+        <!--Spring-security认证相关-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.learnonline</groupId>
             <artifactId>LearnOnline-content-service</artifactId>

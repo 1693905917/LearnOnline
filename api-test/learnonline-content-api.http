@@ -6,3 +6,9 @@ Content-Type: application/json
   "auditStatus": "202004",
   "courseName": "java"
 }
+###根据课程id查询课程接口
+GET http://localhost:63040/content/course/2
+
+### 携带token访问资源服务
+GET http://localhost:63040/content/course/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsibGVhcm5vbmxpbmUiXSwidXNlcl9uYW1lIjoiemhhbmdzYW4iLCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNzIzMDE2MTM1LCJhdXRob3JpdGllcyI6WyJwMSJdLCJqdGkiOiJjZTUwMDFlYy1hYzc3LTQzMWEtOGNlNC0yNTBmOThmMDAxNGUiLCJjbGllbnRfaWQiOiJYY1dlYkFwcCJ9.6Qk7_Kigu-LrC7zWjsSrv5eSBaPJ5C0y-4ul0ilgOyw

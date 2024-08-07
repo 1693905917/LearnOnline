@@ -7,6 +7,9 @@ spring:
   cloud:
     nacos:
       server-addr: 192.168.101.65:8848
+      discovery:
+        namespace: dev
+        group: LearnOnline
       config:  #配置文件相关配置
         namespace: dev
         group: LearnOnline
@@ -19,6 +22,10 @@ spring:
           - data-id: logging-${spring.profiles.active}.yaml
             group: LearnOnline-common
             refresh: true
+          - data-id: feign-${spring.profiles.active}.yaml
+            group: LearnOnline-commom
+            refresh: true
+
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://192.168.101.65:3306/ol_content?serverTimezone=UTC&userUnicode=true&useSSL=false&

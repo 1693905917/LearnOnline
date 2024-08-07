@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -190,21 +191,23 @@ public class MediaFileServiceImpl implements MediaFileService {
      * @throws LearnOnlineException 上传文件失败或保存信息失败时抛出异常
      */
     @Override
-    public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath) {
+    public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath,String objectName) {
 
         //文件名
         String filename = uploadFileParamsDto.getFilename();
         //先得到扩展名
         String extension = filename.substring(filename.lastIndexOf("."));
-
         //得到mimeType
         String mimeType = getMimeType(extension);
-
         //子目录
         String defaultFolderPath = getDefaultFolderPath();
         //文件的md5值
         String fileMd5 = getFileMd5(new File(localFilePath));
-        String objectName = defaultFolderPath+fileMd5+extension;
+        //存储到minio中的对象名(带目录)
+        if(StringUtils.isEmpty(objectName)){
+            objectName =  defaultFolderPath + fileMd5 + extension;
+        }
+//        String objectName = defaultFolderPath+fileMd5+extension;
         //上传文件到minio
         boolean result = addMediaFilesToMinIO(localFilePath, mimeType, bucket_mediafiles, objectName);
         if(!result){

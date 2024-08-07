@@ -1,0 +1,16 @@
+
+### 授权码模式
+### 第一步申请授权码(浏览器请求)/oauth/authorize?client_id=c1&response_type=code&scope=all&redirect_uri=http://www.51xuecheng.cn
+### 第二步申请令牌
+POST http://localhost:63070/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=authorization_code&code=pVtIEB&redirect_uri=http://www.learnonline.cn
+
+### 密码模式
+POST http://localhost:63070/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=password&username=zhangsan&password=123
+
+###校验jwt令牌
+POST http://localhost:63070/auth/oauth/check_token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsibGVhcm5vbmxpbmUiXSwidXNlcl9uYW1lIjoiemhhbmdzYW4iLCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNzIzMDE1NDY3LCJhdXRob3JpdGllcyI6WyJwMSJdLCJqdGkiOiIxZWRmYjEyMS1mZWUwLTQyYTktODE0Yy1lYTRlZDE0YTVlNGUiLCJjbGllbnRfaWQiOiJYY1dlYkFwcCJ9.5OqZnks6yAVwWO7EizkMBFmRaqrcMGopxAuo7owYLbE
+
+### 通过网关访问资源服务
+GET http://localhost:63010/content/course/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsibGVhcm5vbmxpbmUiXSwidXNlcl9uYW1lIjoiemhhbmdzYW4iLCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNzIzMDI1Mzk1LCJhdXRob3JpdGllcyI6WyJwMSJdLCJqdGkiOiJmZDljNGE3OC05NTA0LTQxMjAtYmM5Yi01MTQxZThmNzZjODUiLCJjbGllbnRfaWQiOiJYY1dlYkFwcCJ9.wJvPHV4KK69BegA655tima4HKZNcv2Bny6hJ0EdRIuo
+

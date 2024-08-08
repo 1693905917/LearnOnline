@@ -62,6 +62,4 @@ public class TokenConfig {
         return service;
     }
 
-
-
 }

@@ -26,20 +26,19 @@ import javax.annotation.Resource;
  @EnableAuthorizationServer
  public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
 
-  @Resource(name="authorizationServerTokenServicesCustom")
-  private AuthorizationServerTokenServices authorizationServerTokenServices;
+ @Resource(name="authorizationServerTokenServicesCustom")
+ private AuthorizationServerTokenServices authorizationServerTokenServices;
 
  @Autowired
  private AuthenticationManager authenticationManager;
-
   //客户端详情服务
   @Override
   public void configure(ClientDetailsServiceConfigurer clients)
           throws Exception {
         clients.inMemory()// 使用in-memory存储
                 .withClient("XcWebApp")// client_id
-                .secret("XcWebApp")//客户端密钥
-//                .secret(new BCryptPasswordEncoder().encode("XcWebApp"))//客户端密钥
+                //.secret("XcWebApp")//客户端密钥
+                .secret(new BCryptPasswordEncoder().encode("XcWebApp"))//客户端密钥
                 .resourceIds("learnonline")//资源列表
                 .authorizedGrantTypes("authorization_code", "password","client_credentials","implicit","refresh_token")// 该client允许的授权类型authorization_code,password,refresh_token,implicit,client_credentials
                 .scopes("all")// 允许的授权范围

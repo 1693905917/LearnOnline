@@ -4,4 +4,5 @@ POST http://localhost:63075/checkcode/pic
 ### 校验验证码
 POST http://localhost:63075/checkcode/verify?key=checkcode:f85b906324d047a8958d94206cee749e&code=GN3J
 
-
+### 生成手机/邮箱验证码
+POST http://localhost:63075/checkcode/phone?cellphone=15270673628&eamil=1693905917@qq.com

@@ -11,6 +11,15 @@ import com.learnonline.checkcode.model.CheckCodeResultDto;
  */
 public interface CheckCodeService {
 
+    /**
+     * 根据手机/邮箱号生成验证码
+     *
+     * @param cellphone
+     * @param email
+     * @return
+     */
+    CheckCodeResultDto phoneCode(String cellphone, String email);
+
 
     /**
      * @description 生成验证码

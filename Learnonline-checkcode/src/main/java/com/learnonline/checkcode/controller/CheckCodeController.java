@@ -1,13 +1,18 @@
 package com.learnonline.checkcode.controller;
 
+import com.alibaba.cloud.commons.lang.StringUtils;
+import com.learnonline.base.execption.LearnOnlineException;
 import com.learnonline.checkcode.model.CheckCodeParamsDto;
 import com.learnonline.checkcode.model.CheckCodeResultDto;
 
 import com.learnonline.checkcode.service.CheckCodeService;
+import com.learnonline.checkcode.service.SendCodeService;
+import com.learnonline.checkcode.utils.MailUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,6 +30,8 @@ public class CheckCodeController {
     @Resource(name = "PicCheckCodeService")
     private CheckCodeService picCheckCodeService;
 
+//    @Autowired
+//    SendCodeService sendCodeService;
 
     @ApiOperation(value="生成验证信息", notes="生成验证信息")
     @PostMapping(value = "/pic")
@@ -43,4 +50,15 @@ public class CheckCodeController {
         Boolean isSuccess = picCheckCodeService.verify(key,code);
         return isSuccess;
     }
+
+
+    @ApiOperation(value = "发送邮箱验证码", tags = "发送邮箱验证码")
+    @PostMapping("/phone")
+    public CheckCodeResultDto phoneCode(@RequestParam(value = "cellphone")String cellphone,@RequestParam("email")String email){
+        if (StringUtils.isBlank(cellphone) && StringUtils.isBlank(email)){
+            throw new LearnOnlineException("手机邮箱不能为空！");
+        }
+        return picCheckCodeService.phoneCode(cellphone,email);
+    }
+
 }

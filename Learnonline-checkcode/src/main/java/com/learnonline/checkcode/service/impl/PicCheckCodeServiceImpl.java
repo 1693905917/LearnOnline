@@ -1,5 +1,6 @@
 package com.learnonline.checkcode.service.impl;
 
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.learnonline.base.utils.EncryptUtil;
 import com.learnonline.checkcode.model.CheckCodeParamsDto;
@@ -46,6 +47,29 @@ public class PicCheckCodeServiceImpl extends AbstractCheckCodeService implements
     @Override
     public void setCheckCodeStore(CheckCodeStore checkCodeStore) {
         this.checkCodeStore = checkCodeStore;
+    }
+
+
+    @Override
+    public CheckCodeResultDto phoneCode(String cellphone, String email) {
+        //两个都填写优先使用手机号找回
+        GenerateResult generate = null;
+        if ((StringUtils.isNotBlank(cellphone) && StringUtils.isNotBlank(email))||StringUtils.isNotBlank(cellphone)){
+            generate = this.generate(new CheckCodeParamsDto(), 4, cellphone + ":", 600);
+            return this.getCheckCodeResultDto(generate);
+        }
+        generate = this.generate(new CheckCodeParamsDto(), 4, email + ":", 600);
+        return this.getCheckCodeResultDto(generate);
+    }
+
+    private CheckCodeResultDto getCheckCodeResultDto(GenerateResult generate) {
+        String key = generate.getKey();
+        String code = generate.getCode();
+        String pic = createPic(code);
+        CheckCodeResultDto checkCodeResultDto = new CheckCodeResultDto();
+        checkCodeResultDto.setAliasing(pic);
+        checkCodeResultDto.setKey(key);
+        return checkCodeResultDto;
     }
 
 

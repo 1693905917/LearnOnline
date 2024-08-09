@@ -1,5 +1,6 @@
 package com.learnonline.content.api;
 
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.learnonline.base.execption.ValidationGroups;
 import com.learnonline.base.model.PageParams;
 import com.learnonline.base.model.PageResult;
@@ -13,6 +14,7 @@ import com.learnonline.content.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,9 +41,17 @@ public class CourseBaseInfoController {
      * @return 课程列表分页结果
      */
     @ApiOperation("课程查询接口")
+    @PreAuthorize("hasAuthority('xc_teachmanager_course_list')")//拥有<我的课程>权限方可访问
     @PostMapping("/course/list")
     public PageResult<CourseBase> list(PageParams pageParams, @RequestBody(required = false) QueryCourseParamsDto queryCourseParams) {
-        PageResult<CourseBase> courseBasePageResult = courseBaseInfoService.queryCourseBaseList(pageParams, queryCourseParams);
+        //当前登录用户
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        //用户所属机构ID
+        Long companyId = null;
+        if (StringUtils.isNotEmpty(user.getCompanyId())) {
+            companyId = Long.parseLong(user.getCompanyId());
+        }
+        PageResult<CourseBase> courseBasePageResult = courseBaseInfoService.queryCourseBaseList(companyId,pageParams, queryCourseParams);
         return courseBasePageResult;
     }
 

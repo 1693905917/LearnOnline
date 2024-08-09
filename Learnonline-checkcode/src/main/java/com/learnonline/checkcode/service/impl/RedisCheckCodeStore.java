@@ -3,6 +3,7 @@ package com.learnonline.checkcode.service.impl;
 import com.learnonline.checkcode.service.CheckCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisCheckCodeStore implements CheckCodeService.CheckCodeStore {
 
     @Autowired
-    RedisTemplate redisTemplate;
+    private StringRedisTemplate redisTemplate;
 
 
     @Override

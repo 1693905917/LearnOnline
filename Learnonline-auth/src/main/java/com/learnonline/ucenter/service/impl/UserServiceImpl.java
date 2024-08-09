@@ -2,9 +2,11 @@ package com.learnonline.ucenter.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.learnonline.ucenter.mapper.XcMenuMapper;
 import com.learnonline.ucenter.mapper.XcUserMapper;
 import com.learnonline.ucenter.model.dto.AuthParamsDto;
 import com.learnonline.ucenter.model.dto.XcUserExt;
+import com.learnonline.ucenter.model.po.XcMenu;
 import com.learnonline.ucenter.model.po.XcUser;
 import com.learnonline.ucenter.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @BelongsProject: LearnOnline
@@ -33,6 +38,9 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Autowired
     ApplicationContext applicationContext;
+
+    @Autowired
+    XcMenuMapper xcMenuMapper;
 
     //传入的请求认证的参数就是AuthParamsDto
     @Override
@@ -72,6 +80,18 @@ public class UserServiceImpl implements UserDetailsService {
         String password = xcUser.getPassword();
         //权限
         String[] authorities=  {"test"};
+        //查询用户权限
+        List<XcMenu> xcMenus = xcMenuMapper.selectPermissionByUserId(xcUser.getId());
+        List<String> permissions = new ArrayList<>();
+        if(xcMenus.size()>0){
+            xcMenus.forEach(menu->{
+                //拿到了用户拥有的权限标识符
+                permissions.add(menu.getCode());
+            });
+            authorities = permissions.toArray(new String[0]);
+        }
+        //将用户权限放在XcUserExt中
+        xcUser.setPermissions(permissions);
         xcUser.setPassword(null);
         //将用户信息转json
         String userJson = JSON.toJSONString(xcUser);

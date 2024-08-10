@@ -18,7 +18,7 @@ public interface CheckCodeService {
      * @param email
      * @return
      */
-    CheckCodeResultDto phoneCode(String cellphone, String email);
+//    CheckCodeResultDto phoneCode(String cellphone, String email);
 
 
     /**

@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisCheckCodeStore implements CheckCodeService.CheckCodeStore {
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
 
     @Override

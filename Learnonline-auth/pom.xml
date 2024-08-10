@@ -13,6 +13,11 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>com.learnonline</groupId>
+            <artifactId>LearnOnline-base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <!--redis依赖-->
         <dependency>

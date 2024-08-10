@@ -1,7 +1,10 @@
 package com.learnonline.ucenter.service;
 
-import com.learnonline.ucenter.model.dto.PasswordParamDto;
+import com.learnonline.ucenter.model.dto.FindPswDto;
+import com.learnonline.ucenter.model.dto.RegisterDto;
 
 public interface VerifyService {
-    public void findPassword(PasswordParamDto findPswDto);
+    void findPassword(FindPswDto findPswDto);
+
+    void register(RegisterDto registerDto);
 }

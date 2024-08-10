@@ -1,6 +1,6 @@
 package com.learnonline.auth.controller;
 
-import com.learnonline.ucenter.model.dto.PasswordParamDto;
+import com.learnonline.ucenter.model.dto.FindPswDto;
 import com.learnonline.ucenter.model.po.XcUser;
 import com.learnonline.ucenter.service.VerifyService;
 import com.learnonline.ucenter.service.WxAuthService;
@@ -28,8 +28,6 @@ public class WxLoginController {
 
     @Autowired
     WxAuthService wxAuthService;
-    @Autowired
-    VerifyService verifyService;
 
     @RequestMapping("/wxLogin")
     public String wxLogin(String code, String state) throws IOException {
@@ -43,11 +41,9 @@ public class WxLoginController {
         return "redirect:http://www.learnonline.cn/sign.html?username="+username+"&authType=wx";
     }
 
-//    @ApiOperation(value = "找回密码", tags = "找回密码")
-//    @PostMapping("/findpassword")
-//    public void findPassword(@RequestBody PasswordParamDto findPswDto) {
-//        log.debug("找回密码请求参数:{}",findPswDto);
-//        verifyService.findPassword(findPswDto);
-//    }
+
+
+
+
 }
 

@@ -30,8 +30,8 @@ public class CheckCodeController {
     @Resource(name = "PicCheckCodeService")
     private CheckCodeService picCheckCodeService;
 
-//    @Autowired
-//    SendCodeService sendCodeService;
+    @Autowired
+    SendCodeService sendCodeService;
 
     @ApiOperation(value="生成验证信息", notes="生成验证信息")
     @PostMapping(value = "/pic")
@@ -54,11 +54,9 @@ public class CheckCodeController {
 
     @ApiOperation(value = "发送邮箱验证码", tags = "发送邮箱验证码")
     @PostMapping("/phone")
-    public CheckCodeResultDto phoneCode(@RequestParam(value = "cellphone")String cellphone,@RequestParam("email")String email){
-        if (StringUtils.isBlank(cellphone) && StringUtils.isBlank(email)){
-            throw new LearnOnlineException("手机邮箱不能为空！");
-        }
-        return picCheckCodeService.phoneCode(cellphone,email);
+    public void sendEMail(@RequestParam("param1") String email) {
+        String code = MailUtil.achieveCode();
+        sendCodeService.sendEMail(email, code);
     }
 
 }

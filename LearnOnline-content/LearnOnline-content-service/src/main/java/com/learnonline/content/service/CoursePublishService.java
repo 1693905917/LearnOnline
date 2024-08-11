@@ -1,6 +1,7 @@
 package com.learnonline.content.service;
 
 import com.learnonline.content.model.dto.CoursePreviewDto;
+import com.learnonline.content.model.po.CoursePublish;
 
 import java.io.File;
 
@@ -46,5 +47,12 @@ public interface CoursePublishService {
      */
     public void  uploadCourseHtml(Long courseId,File file);
 
+    /**
+     * 根据课程ID获取课程发布信息
+     *
+     * @param courseId 课程ID
+     * @return 返回课程发布信息，若未找到则返回null
+     */
+    CoursePublish getCoursePublish(Long courseId);
 }
 

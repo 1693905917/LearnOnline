@@ -7,12 +7,12 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://www.51xuecheng.cn/static/img/asset-favicon.ico">
+    <link rel="icon" href="http://www.learnonline.cn/static/img/asset-favicon.ico">
     <title>登录</title>
-    <link rel="stylesheet" href="http://www.51xuecheng.cn/static/plugins/normalize-css/normalize.css" />
-    <link rel="stylesheet" href="http://www.51xuecheng.cn/static/plugins/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="http://www.51xuecheng.cn/static/css/page-learing-sign.css" />
-    <script src="http://www.51xuecheng.cn/static/js/wxLogin.js"></script>
+    <link rel="stylesheet" href="http://www.learnonline.cn/static/plugins/normalize-css/normalize.css" />
+    <link rel="stylesheet" href="http://www.learnonline.cn/static/plugins/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="http://www.learnonline.cn/static/css/page-learing-sign.css" />
+    <script src="http://www.learnonline.cn/static/js/wxLogin.js"></script>
 </head>
 
 <body>
@@ -23,7 +23,7 @@
         <!--<img src="../../assets/img/logoico.png" alt="logo" width="200">-->
 
         <div class="register-body container text-center">
-            <div class="signTit cl"><span class="sign activ" style="width:100px">扫码登录</span><span ><a href="http://www.51xuecheng.cn/register.html">注册</a></span></div>
+            <div class="signTit cl"><span class="sign activ" style="width:100px">扫码登录</span><span ><a href="http://www.learnonline.cn/register.html">注册</a></span></div>
             <div class="signItem show" id="login_container">
                 
             </div>
@@ -43,9 +43,9 @@
     var wxObj = new WxLogin({
         self_redirect:true,
         id:"login_container", 
-        appid: "wx17655f8047b85150", 
+        appid: "wxed9954c01bb89b47", 
         scope: "snsapi_login", 
-        redirect_uri: "http://tjxt-user-t.itheima.net/xuecheng/auth/wxLogin",
+        redirect_uri: "http://localhost:8160/auth/wxLogin",
         state: token,
         style: "",
         href: ""

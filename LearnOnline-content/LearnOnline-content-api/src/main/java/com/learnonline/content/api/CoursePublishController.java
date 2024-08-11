@@ -1,6 +1,7 @@
 package com.learnonline.content.api;
 
 import com.learnonline.content.model.dto.CoursePreviewDto;
+import com.learnonline.content.model.po.CoursePublish;
 import com.learnonline.content.service.CoursePublishService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -69,6 +70,20 @@ public class CoursePublishController {
     public void coursepublish(@PathVariable("courseId") Long courseId){
         Long companyId = 1232141425L;
         coursePublishService.publish(companyId,courseId);
+    }
+
+    /**
+     * 查询课程发布信息
+     *
+     * @param courseId 课程ID
+     * @return 返回课程发布信息
+     */
+    @ApiOperation("查询课程发布信息")
+    @ResponseBody
+    @GetMapping("/r/coursepublish/{courseId}")
+    public CoursePublish getCoursepublish(@PathVariable("courseId") Long courseId) {
+        CoursePublish coursePublish = coursePublishService.getCoursePublish(courseId);
+        return coursePublish;
     }
 
 

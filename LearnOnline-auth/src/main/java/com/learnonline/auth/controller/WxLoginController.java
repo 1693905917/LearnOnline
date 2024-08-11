@@ -40,10 +40,5 @@ public class WxLoginController {
         String username = xcUser.getUsername();
         return "redirect:http://www.learnonline.cn/sign.html?username="+username+"&authType=wx";
     }
-
-
-
-
-
 }
 

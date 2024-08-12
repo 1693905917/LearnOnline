@@ -1,6 +1,6 @@
-package com.xuecheng.learning.model.dto;
+package com.learnonline.learning.model.dto;
 
-import com.xuecheng.learning.model.po.XcChooseCourse;
+import com.learnonline.learning.model.po.XcChooseCourse;
 import lombok.Data;
 import lombok.ToString;
 

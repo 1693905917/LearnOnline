@@ -1,7 +1,7 @@
-package com.learnonline.learning.mapper;
+package com.xuecheng.orders.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.learnonline.learning.model.po.XcChooseCourse;
+import com.learnonline.orders.model.po.XcOrdersGoods;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -12,6 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author itcast
  */
 @Mapper
-public interface XcChooseCourseMapper extends BaseMapper<XcChooseCourse> {
+public interface XcOrdersGoodsMapper extends BaseMapper<XcOrdersGoods> {
 
 }

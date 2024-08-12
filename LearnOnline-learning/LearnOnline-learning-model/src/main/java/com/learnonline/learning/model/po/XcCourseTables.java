@@ -1,4 +1,4 @@
-package com.xuecheng.learning.model.po;
+package com.learnonline.learning.model.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
@@ -14,26 +14,18 @@ import java.time.LocalDateTime;
  * @author itcast
  */
 @Data
-@TableName("xc_choose_course")
-public class XcChooseCourse implements Serializable {
+@TableName("xc_course_tables")
+public class XcCourseTables implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 课程id
+     * 选课记录id
      */
-    private Long courseId;
-
-    /**
-     * 课程名称
-     */
-    private String courseName;
+    private Long chooseCourseId;
 
     /**
      * 用户id
@@ -41,14 +33,24 @@ public class XcChooseCourse implements Serializable {
     private String userId;
 
     /**
+     * 课程id
+     */
+    private Long courseId;
+
+    /**
      * 机构id
      */
     private Long companyId;
 
     /**
-     * 选课类型
+     * 课程名称
      */
-    private String orderType;
+    private String courseName;
+    /**
+     * 课程名称
+     */
+    private String courseType;
+
 
     /**
      * 添加时间
@@ -57,26 +59,19 @@ public class XcChooseCourse implements Serializable {
     private LocalDateTime createDate;
 
     /**
-     * 课程有效期(天)
-     */
-    private Integer validDays;
-
-    private Float coursePrice;
-
-    /**
-     * 选课状态
-     */
-    private String status;
-
-    /**
      * 开始服务时间
      */
     private LocalDateTime validtimeStart;
 
     /**
-     * 结束服务时间
+     * 到期时间
      */
     private LocalDateTime validtimeEnd;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateDate;
 
     /**
      * 备注

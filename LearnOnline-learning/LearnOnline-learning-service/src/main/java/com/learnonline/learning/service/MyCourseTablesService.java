@@ -1,7 +1,7 @@
 package com.learnonline.learning.service;
 
-import com.xuecheng.learning.model.dto.XcChooseCourseDto;
-import com.xuecheng.learning.model.dto.XcCourseTablesDto;
+import com.learnonline.learning.model.dto.XcChooseCourseDto;
+import com.learnonline.learning.model.dto.XcCourseTablesDto;
 
 /**
  * @description 我的课程表service接口

@@ -249,7 +249,7 @@
                         if(res.success){
                             this.$message.success('订单创建成功');
                             //跳转到支付页面
-                            window.location = "http://ucenter.xuecheng.com/#/pay/"+res.xcOrders.orderNumber
+                            window.location = "http://ucenter.learnonline.com/#/pay/"+res.xcOrders.orderNumber
                         }else{
                             if(res.message){
                                 this.$message.error(res.message);

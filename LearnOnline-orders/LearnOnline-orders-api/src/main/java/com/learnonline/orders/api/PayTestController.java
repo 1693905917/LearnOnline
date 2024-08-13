@@ -5,7 +5,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
-import com.xuecheng.orders.config.AlipayConfig;
+import com.learnonline.orders.config.AlipayConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -62,7 +61,7 @@ public class PayTestController {
     }
 
     //接收通知
-    @PostMapping("/paynotify")
+    @PostMapping("/paynotifytest")
     public void paynotify(HttpServletRequest request,HttpServletResponse response) throws Exception {
         Map<String,String> params = new HashMap<String,String>();
         Map requestParams = request.getParameterMap();

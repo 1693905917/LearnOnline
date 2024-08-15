@@ -10,6 +10,11 @@
     <artifactId>LearnOnline-orders-service</artifactId>
 
     <dependencies>
+<!--        MQ-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>

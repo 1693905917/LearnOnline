@@ -15,7 +15,7 @@
       if(data && data.data){
           if(data.data.code && data.data.code =='10001'){
               //需要登录
-              window.location = "http://www.51xuecheng.cn/sign.html?returnUrl="+ Base64.encode(window.location)
+              window.location = "http://www.learnonline.cn/sign.html?returnUrl="+ Base64.encode(window.location)
           }
       }
       return data

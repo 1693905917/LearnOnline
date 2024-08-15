@@ -30,7 +30,7 @@ public class MediaOpenController {
 
     @ApiOperation("预览文件")
     @GetMapping("/preview/{mediaId}")
-    public RestResponse<String> getPlayUrlByMediaId(@PathVariable String mediaId){
+    public RestResponse<String> getPlayUrlByMediaId(@PathVariable("mediaId") String mediaId){
         //根据mediaId查询文件信息
         MediaFiles mediaFiles = mediaFileService.getFileById(mediaId);
         if(mediaFiles==null){

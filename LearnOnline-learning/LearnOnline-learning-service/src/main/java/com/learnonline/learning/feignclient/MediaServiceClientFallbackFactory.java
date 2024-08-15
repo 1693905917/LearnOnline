@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author Mr.M
  * @version 1.0
- * @description TODO
+ * @description 获取视频远程接口
  * @date 2022/10/27 9:05
  */
 @Slf4j

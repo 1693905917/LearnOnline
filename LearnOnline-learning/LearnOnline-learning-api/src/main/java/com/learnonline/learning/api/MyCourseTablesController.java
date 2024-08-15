@@ -33,6 +33,13 @@ public class MyCourseTablesController {
     MyCourseTablesService courseTablesService;
 
 
+    /**
+     * 添加选课
+     *
+     * @param courseId 课程ID
+     * @return 返回选课结果
+     * @throws LearnOnlineException 如果用户未登录，则抛出异常提示用户登录
+     */
     @ApiOperation("添加选课")
     @PostMapping("/choosecourse/{courseId}")
     public XcChooseCourseDto addChooseCourse(@PathVariable("courseId") Long courseId) {
@@ -46,6 +53,13 @@ public class MyCourseTablesController {
 
     }
 
+    /**
+     * 查询学习资格
+     *
+     * @param courseId 课程ID
+     * @return 返回课程学习资格信息
+     * @throws LearnOnlineException 如果用户未登录，则抛出异常提示用户登录
+     */
     @ApiOperation("查询学习资格")
     @PostMapping("/choosecourse/learnstatus/{courseId}")
     public XcCourseTablesDto getLearnStatus(@PathVariable("courseId") Long courseId) {
@@ -59,10 +73,23 @@ public class MyCourseTablesController {
 
     }
 
+    /**
+     * 我的课程表
+     *
+     * @param params 查询课程表参数
+     * @return 课程表分页结果
+     * @throws LearnOnlineException 如果用户未登录，则抛出异常提示用户登录
+     */
     @ApiOperation("我的课程表")
     @GetMapping("/mycoursetable")
-    public PageResult<XcCourseTables> mycoursetable(MyCourseTableParams params) {
-        return null;
+    public PageResult<XcCourseTables> myCourseTables(MyCourseTableParams params) {
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        if (user == null) {
+            LearnOnlineException.cast("请登录后查看课程表");
+        }
+        String userId = user.getId();
+        params.setUserId(userId);
+        return courseTablesService.myCourseTables(params);
     }
 
 }

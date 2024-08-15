@@ -1,5 +1,6 @@
 package com.learnonline.orders.service;
 
+import com.learnonline.messagesdk.model.po.MqMessage;
 import com.learnonline.orders.model.dto.AddOrderDto;
 import com.learnonline.orders.model.dto.PayRecordDto;
 import com.learnonline.orders.model.dto.PayStatusDto;
@@ -35,5 +36,12 @@ public interface OrderService {
      * @return void
      */
     public void saveAliPayStatus(PayStatusDto payStatusDto) ;
+
+
+    /**
+     * 发送通知结果
+     * @param message
+     */
+    public void notifyPayResult(MqMessage message);
 
 }

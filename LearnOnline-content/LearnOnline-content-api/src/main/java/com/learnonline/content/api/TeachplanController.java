@@ -3,6 +3,7 @@ package com.learnonline.content.api;
 import com.learnonline.content.model.dto.BindTeachplanMediaDto;
 import com.learnonline.content.model.dto.SaveTeachplanDto;
 import com.learnonline.content.model.dto.TeachplanDto;
+import com.learnonline.content.model.po.Teachplan;
 import com.learnonline.content.service.TeachplanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -102,4 +103,9 @@ public class TeachplanController {
         teachplanService.unAssociationMedia(teachPlanId, mediaId);
     }
 
+    @ApiOperation("课程计划查询")
+    @PostMapping("/teachplan/{teachplanId}")
+    public Teachplan getTeachplan(@PathVariable("teachplanId") Long teachplanId) {
+        return teachplanService.getTeachplan(teachplanId);
+    }
 }

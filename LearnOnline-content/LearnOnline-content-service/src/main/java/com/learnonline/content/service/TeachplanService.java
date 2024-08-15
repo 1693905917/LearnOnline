@@ -3,6 +3,7 @@ package com.learnonline.content.service;
 import com.learnonline.content.model.dto.BindTeachplanMediaDto;
 import com.learnonline.content.model.dto.SaveTeachplanDto;
 import com.learnonline.content.model.dto.TeachplanDto;
+import com.learnonline.content.model.po.Teachplan;
 import com.learnonline.content.model.po.TeachplanMedia;
 
 import java.util.List;
@@ -59,4 +60,5 @@ public interface TeachplanService {
      */
     void unAssociationMedia(Long teachPlanId, String mediaId);
 
+    Teachplan getTeachplan(Long teachplanId);
 }

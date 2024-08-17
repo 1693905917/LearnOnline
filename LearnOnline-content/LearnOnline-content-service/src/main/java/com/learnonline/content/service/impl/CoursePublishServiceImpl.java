@@ -1,5 +1,6 @@
 package com.learnonline.content.service.impl;
 
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.learnonline.base.execption.CommonError;
 import com.learnonline.base.execption.LearnOnlineException;
@@ -28,10 +29,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -76,6 +77,10 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 
     @Autowired
     MediaServiceClient mediaServiceClient;
+
+    @Autowired
+    RedisTemplate redisTemplate;
+
     /**
      * 获取课程预览信息
      *
@@ -280,6 +285,27 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
         return coursePublish ;
 
+    }
+
+    @Override
+    public CoursePublish getCoursePublishCache(Long courseId) {
+        // 1. 先从缓存中查询
+        String courseCacheJson = (String) redisTemplate.opsForValue().get("course:" + courseId);
+        // 2. 如果缓存里有，直接返回
+        if (StringUtils.isNotEmpty(courseCacheJson)) {
+            log.debug("从缓存中查询");
+            CoursePublish coursePublish = JSON.parseObject(courseCacheJson, CoursePublish.class);
+            return coursePublish;
+        } else {
+            log.debug("缓存中没有，查询数据库");
+            // 3. 如果缓存里没有，查询数据库
+            CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+            String jsonString = JSON.toJSONString(coursePublish);
+            // 3.1 将查询结果缓存
+            redisTemplate.opsForValue().set("course:" + courseId, jsonString);
+            // 3.1 返回查询结果
+            return coursePublish;
+        }
     }
 
     /**

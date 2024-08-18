@@ -42,6 +42,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @BelongsProject: LearnOnline
@@ -289,24 +290,44 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 
     @Override
     public CoursePublish getCoursePublishCache(Long courseId) {
-        // 1. 先从缓存中查询
-        String courseCacheJson = (String) redisTemplate.opsForValue().get("course:" + courseId);
-        // 2. 如果缓存里有，直接返回
-        if (StringUtils.isNotEmpty(courseCacheJson)) {
-            log.debug("从缓存中查询");
-            CoursePublish coursePublish = JSON.parseObject(courseCacheJson, CoursePublish.class);
+
+        //查询缓存
+        Object  jsonObj = redisTemplate.opsForValue().get("course:" + courseId);
+        if(jsonObj!=null){
+            String jsonString = jsonObj.toString();
+            if(jsonString.equals("null"))
+                return null;
+            CoursePublish coursePublish = JSON.parseObject(jsonString, CoursePublish.class);
             return coursePublish;
         } else {
-            log.debug("缓存中没有，查询数据库");
-            // 3. 如果缓存里没有，查询数据库
-            CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
-            String jsonString = JSON.toJSONString(coursePublish);
-            // 3.1 将查询结果缓存
-            redisTemplate.opsForValue().set("course:" + courseId, jsonString);
-            // 3.1 返回查询结果
+            //从数据库查询
+            System.out.println("从数据库查询数据...");
+            CoursePublish coursePublish = getCoursePublish(courseId);
+            //设置过期时间300秒，如果是null最多缓存30s，因为哪天这个Id有了，你还是null就又出bug了
+            redisTemplate.opsForValue().set("course:" + courseId, JSON.toJSONString(coursePublish),30, TimeUnit.SECONDS);
             return coursePublish;
         }
     }
+
+//    public CoursePublish getCoursePublishCache(Long courseId) {
+//        // 1. 先从缓存中查询
+//        String courseCacheJson = (String) redisTemplate.opsForValue().get("course:" + courseId);
+//        // 2. 如果缓存里有，直接返回
+//        if (StringUtils.isNotEmpty(courseCacheJson)) {
+//            log.debug("从缓存中查询");
+//            CoursePublish coursePublish = JSON.parseObject(courseCacheJson, CoursePublish.class);
+//            return coursePublish;
+//        } else {
+//            log.debug("缓存中没有，查询数据库");
+//            // 3. 如果缓存里没有，查询数据库
+//            CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+//            String jsonString = JSON.toJSONString(coursePublish);
+//            // 3.1 将查询结果缓存
+//            redisTemplate.opsForValue().set("course:" + courseId, jsonString);
+//            // 3.1 返回查询结果
+//            return coursePublish;
+//        }
+//    }
 
     /**
      * @description 保存课程发布信息

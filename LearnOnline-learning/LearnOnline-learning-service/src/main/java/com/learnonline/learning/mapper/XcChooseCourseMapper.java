@@ -1,7 +1,7 @@
 package com.learnonline.learning.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xuecheng.learning.model.po.XcChooseCourse;
+import com.learnonline.learning.model.po.XcChooseCourse;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

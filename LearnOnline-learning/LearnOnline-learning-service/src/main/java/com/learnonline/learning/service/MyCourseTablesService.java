@@ -1,7 +1,10 @@
 package com.learnonline.learning.service;
 
-import com.xuecheng.learning.model.dto.XcChooseCourseDto;
-import com.xuecheng.learning.model.dto.XcCourseTablesDto;
+import com.learnonline.base.model.PageResult;
+import com.learnonline.learning.model.dto.MyCourseTableParams;
+import com.learnonline.learning.model.dto.XcChooseCourseDto;
+import com.learnonline.learning.model.dto.XcCourseTablesDto;
+import com.learnonline.learning.model.po.XcCourseTables;
 
 /**
  * @description 我的课程表service接口
@@ -26,5 +29,22 @@ public interface MyCourseTablesService {
      */
     public XcCourseTablesDto getLearningStatus(String userId, Long courseId);
 
+    /*
+     * @description:保存选课成功状态
+     * @author:  HZP
+     * @date: 2024/8/15 8:11
+     * @param: chooseCourseId
+     * @return:
+     **/
+    boolean saveChooseCourseSuccessStatus(String chooseCourseId);
+
+
+    /**
+     * 查询我的课程表分页信息
+     *
+     * @param params 查询参数
+     * @return 返回我的课程表分页结果
+     */
+    PageResult<XcCourseTables> myCourseTables(MyCourseTableParams params);
 }
 

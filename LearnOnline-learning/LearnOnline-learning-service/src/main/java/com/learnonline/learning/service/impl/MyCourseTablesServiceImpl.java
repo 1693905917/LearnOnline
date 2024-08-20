@@ -1,16 +1,19 @@
 package com.learnonline.learning.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.learnonline.base.execption.LearnOnlineException;
+import com.learnonline.base.model.PageResult;
 import com.learnonline.content.model.po.CoursePublish;
 import com.learnonline.learning.feignclient.ContentServiceClient;
 import com.learnonline.learning.mapper.XcChooseCourseMapper;
 import com.learnonline.learning.mapper.XcCourseTablesMapper;
+import com.learnonline.learning.model.dto.MyCourseTableParams;
 import com.learnonline.learning.service.MyCourseTablesService;
-import com.xuecheng.learning.model.dto.XcChooseCourseDto;
-import com.xuecheng.learning.model.dto.XcCourseTablesDto;
-import com.xuecheng.learning.model.po.XcChooseCourse;
-import com.xuecheng.learning.model.po.XcCourseTables;
+import com.learnonline.learning.model.dto.XcChooseCourseDto;
+import com.learnonline.learning.model.dto.XcCourseTablesDto;
+import com.learnonline.learning.model.po.XcChooseCourse;
+import com.learnonline.learning.model.po.XcCourseTables;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +43,12 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
     @Autowired
     ContentServiceClient contentServiceClient;
 
-    @Autowired
-    MyCourseTablesService myCourseTablesService;
+//    @Autowired
+//    MyCourseTablesService myCourseTablesService;
 
     @Autowired
     MyCourseTablesServiceImpl currentProxy;
+
 
     @Transactional
     @Override
@@ -103,6 +107,54 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
             return xcCourseTablesDto;
         }
 
+    }
+
+    @Override
+    public boolean saveChooseCourseSuccessStatus(String chooseCourseId) {
+        //根据选课记录ID查询课表
+        XcChooseCourse xcChooseCourse = xcChooseCourseMapper.selectById(chooseCourseId);
+        if(xcChooseCourse==null){
+            log.debug("接收购买课程的消息，根据选课id从数据库找不到选课记录，选课id:{}",chooseCourseId);
+            return false;
+        }
+        //选课状态
+        String status = xcChooseCourse.getStatus();
+        //只有当未支付的时候才更新为已支付
+        if("701002".equals(status)){
+            //更新选课状态为已支付
+            xcChooseCourse.setStatus("701001");
+            int i = xcChooseCourseMapper.updateById(xcChooseCourse);
+            if(i<=0){
+                log.debug("添加选课记录失败，选课id:{}",chooseCourseId);
+                LearnOnlineException.cast("添加选课记录失败");
+            }
+            //向我的课程表插入记录
+            addCourseTables(xcChooseCourse);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public PageResult<XcCourseTables> myCourseTables(MyCourseTableParams params) {
+        // 1. 获取页码
+        int pageNo = params.getPage();
+        // 2. 设置每页记录数，固定为4
+        long pageSize = 4;
+        // 3. 分页条件
+        Page<XcCourseTables> page = new Page<>(pageNo, pageSize);
+        // 4. 根据用户id查询课程
+        String userId = params.getUserId();
+        LambdaQueryWrapper<XcCourseTables> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(XcCourseTables::getUserId, userId);
+        // 5. 分页查询
+        Page<XcCourseTables> pageResult = xcCourseTablesMapper.selectPage(page, queryWrapper);
+        // 6. 获取记录总数
+        long total = pageResult.getTotal();
+        // 7. 获取记录
+        List<XcCourseTables> records = pageResult.getRecords();
+        // 8. 封装返回
+        return new PageResult<>(records, total, pageNo, pageSize);
     }
 
     /**

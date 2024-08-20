@@ -3,7 +3,7 @@
 <mapper namespace="com.learnonline.learning.mapper.XcChooseCourseMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xuecheng.learning.model.po.XcChooseCourse">
+    <resultMap id="BaseResultMap" type="com.learnonline.learning.model.po.XcChooseCourse">
         <id column="id" property="id" />
         <result column="course_id" property="courseId" />
         <result column="course_name" property="courseName" />

@@ -37,6 +37,9 @@ spring:
           - data-id: feign-${spring.profiles.active}.yaml
             group: LearnOnline-commom
             refresh: true
+          - data-id: feign-${spring.profiles.active}.yaml
+            group: LearnOnline-common
+            refresh: true
 
 
 #  datasource:

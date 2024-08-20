@@ -238,6 +238,10 @@ public class TeachplanServiceImpl implements TeachplanService {
         teachplanMediaMapper.delete(queryWrapper);
     }
 
+    @Override
+    public Teachplan getTeachplan(Long teachplanId) {
+        return teachplanMapper.selectById(teachplanId);
+    }
 
     /**
      * 交换两个课程计划的排序值
